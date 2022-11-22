@@ -27,5 +27,13 @@ describe Dotenv do
     it "produces an empty hash with a non-existent dotenv file" do
       Dotenv.load("no/such/path.env").should eq Hash(String, String).new
     end
+
+    it "processes empty variable assigments correctly" do
+      Dotenv.load("spec/data/empty-var.env")
+
+      ENV["EMPTY_VARIABLE_NO_QUOTES"].should eq ""
+      ENV["EMPTY_VARIABLE_SINGLE_QUOTES"].should eq ""
+      ENV["EMPTY_VARIABLE_DOUBLE_QUOTES"].should eq ""
+    end
   end
 end
