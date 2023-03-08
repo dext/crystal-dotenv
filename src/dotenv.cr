@@ -1,10 +1,12 @@
 module Dotenv
-  def self.load(path = ".env", set_env = true, override_env = true) : Hash(String, String)
+  def self.load(path = ".env", set_env = true, override_env = true, on_not_found = :ignore) : Hash(String, String)
     hash = process_file(path)
     set_env(hash, override_env) if set_env
 
     hash
   rescue exc : File::NotFoundError
+    raise exc if on_not_found == :fail
+
     Hash(String, String).new
   end
 

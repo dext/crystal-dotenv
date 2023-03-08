@@ -26,6 +26,13 @@ describe Dotenv do
 
     it "produces an empty hash with a non-existent dotenv file" do
       Dotenv.load("no/such/path.env").should eq Hash(String, String).new
+      Dotenv.load("no/such/path.env", on_not_found: :ignore).should eq Hash(String, String).new
+    end
+
+    it "fails with a non-existent dotenv file when failure is requested" do
+      expect_raises(File::NotFoundError) do
+        Dotenv.load("no/such/path.env", on_not_found: :fail)
+      end
     end
 
     it "processes empty variable assigments correctly" do
